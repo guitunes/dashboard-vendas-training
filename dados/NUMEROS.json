@@ -1,10 +1,10 @@
 {
- "corte": "24/11/2026 08:00",
+ "corte": "24/11/2026 09:04",
  "vendas_mes": 254616.95,
  "itens_mes": 182,
  "pagantes": 812,
  "ativos": 1043,
  "mrr": 47968.0,
  "assinaturas_ativas": 84,
- "versao_molde": "39a0cb7d0702"
+ "versao_molde": "24cc6bbef1ef"
 }
