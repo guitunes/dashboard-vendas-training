@@ -1,0 +1,32 @@
+name: Publica dashboard de vendas
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publica:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confere o arquivo antes de publicar
+        run: |
+          test -s index.html
+          [ "$(wc -c < index.html)" -gt 200000 ] || { echo "index.html pequeno demais"; exit 1; }
+          if grep -Eq '[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.(com|br|net|org)\b' index.html; then echo "e-mail no HTML"; exit 1; fi
+          if grep -Eq '[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-[0-9]{2}' index.html; then echo "CPF no HTML"; exit 1; fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4
